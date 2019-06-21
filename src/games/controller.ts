@@ -16,6 +16,7 @@ import User from "../users/entity";
 import { Game, Player, Card } from "./entities";
 import { calculateWinner, generateRandomCard, calculatePoints } from "./logic";
 import { io } from "../index";
+// import { Entity } from "typeorm";
 
 class GameUpdate {
   cardId: number;
@@ -29,9 +30,9 @@ export default class GameController {
   async createGame(@CurrentUser() user: User) {
     const entity = await Game.create().save();
 
-    const cardOne = await Card.create(generateRandomCard("x")).save();
-    const cardTwo = await Card.create(generateRandomCard("x")).save();
-    const cardThree = await Card.create(generateRandomCard("x")).save();
+    const cardOne = await Card.create(generateRandomCard("x", entity, user)).save();
+    const cardTwo = await Card.create(generateRandomCard("x", entity, user)).save();
+    const cardThree = await Card.create(generateRandomCard("x", entity, user)).save();
 
     await Player.create({
       game: entity,
@@ -62,9 +63,9 @@ export default class GameController {
     game.status = "started";
     await game.save();
 
-    const cardOne = await Card.create(generateRandomCard("o")).save();
-    const cardTwo = await Card.create(generateRandomCard("o")).save();
-    const cardThree = await Card.create(generateRandomCard("o")).save();
+    const cardOne = await Card.create(generateRandomCard("o", game, user)).save();
+    const cardTwo = await Card.create(generateRandomCard("o", game, user)).save();
+    const cardThree = await Card.create(generateRandomCard("o", game, user)).save();
 
     const player = await Player.create({
       game,
@@ -97,7 +98,7 @@ export default class GameController {
       throw new BadRequestError(`It's not your turn`);
 
     // replacing the card played with a new card
-    const newCard = await Card.create(generateRandomCard(player.symbol)).save();
+    const newCard = await Card.create(generateRandomCard(player.symbol, game, user)).save();
     player.hand = player.hand.map(handCard => {
       const isMatch = handCard.id === update.cardId;
       if (isMatch) {

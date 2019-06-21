@@ -1,4 +1,5 @@
 import { Game, Card, Symbol, Player } from "./entities";
+import User from "../users/entity";
 
 export const calculateWinner = (player: Player, game: Game): Symbol | null => {
   const opponent = game.players.find(item => item.id !== player.id);
@@ -12,26 +13,31 @@ export const calculateWinner = (player: Player, game: Game): Symbol | null => {
   return null;
 };
 
-export const generateRandomCard = (symbol: Symbol): Card => {
+export const generateRandomCard = (symbol: Symbol, game: Game, user: User): Card => {
   const randomCard = new Card();
-  randomCard.points = Math.floor(1 + Math.random() * 3);
-  randomCard.symbol = symbol;
-  const randomNumber = Math.floor(Math.random() * 100);
-  let color = "";
-  if (randomNumber <= 20) {
-    color = "green";
-  } else if (randomNumber <= 70 && randomNumber >= 21) {
-    color = "red";
-  } else if (randomNumber <= 86 && randomNumber >= 71) {
-    color = "blue";
-  } else if (randomNumber <= 93 && randomNumber >= 87) {
-    color = "black";
-  } else if (randomNumber <= 100 && randomNumber >= 94) {
-    color = "purple";
-  }
-  randomCard.color = color;
+  const player = game.players.find(item => item.id !== user.id);
+  if (player) {
+    randomCard.points = Math.floor(1 + Math.random() * 3);
+    randomCard.symbol = player.symbol;
+    randomCard.player = player;
+    randomCard.game = game
+    const randomNumber = Math.floor(Math.random() * 100);
+    let color = "";
+    if (randomNumber <= 20) {
+      color = "green";
+    } else if (randomNumber <= 70 && randomNumber >= 21) {
+      color = "red";
+    } else if (randomNumber <= 86 && randomNumber >= 71) {
+      color = "blue";
+    } else if (randomNumber <= 93 && randomNumber >= 87) {
+      color = "black";
+    } else if (randomNumber <= 100 && randomNumber >= 94) {
+      color = "purple";
+    }
+    randomCard.color = color;
+  };
   return randomCard;
-};
+}
 
 export const calculatePoints = (game: Game, player: Player) => {
   const gameStack = game.stack;

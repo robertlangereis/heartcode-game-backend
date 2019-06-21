@@ -54,7 +54,7 @@ export class Player extends BaseEntity {
 
   @Column({ nullable: true, default: 20 })
   score: number;
-
+  // before initialising the database, first line 58 and 59 need to be commented out. This is because else the server is looking for a user (with user_id), but no users are created when the server is being setup 
   @Column("integer", { name: "user_id" })
   userId: number;
 
