@@ -14,20 +14,23 @@ export const calculateWinner = (player: Player, game: Game): Symbol | null => {
 
 export const generateRandomCard = (symbol: Symbol): Card => {
   const randomCard = new Card();
-  randomCard.points = Math.floor(1 + Math.random() * 3);
   randomCard.symbol = symbol;
   const randomNumber = Math.floor(Math.random() * 100);
   let color = "";
   if (randomNumber <= 20) {
     color = "green";
+    randomCard.points = Math.floor(1 + Math.random() * 5);
   } else if (randomNumber <= 70 && randomNumber >= 21) {
     color = "red";
+    randomCard.points = Math.floor(1 + Math.random() * 5);
   } else if (randomNumber <= 86 && randomNumber >= 71) {
     color = "blue";
   } else if (randomNumber <= 93 && randomNumber >= 87) {
     color = "black";
+    randomCard.points = Math.floor(1 + Math.random() * 15);
   } else if (randomNumber <= 100 && randomNumber >= 94) {
     color = "purple";
+    randomCard.points = Math.floor(1 + Math.random() * 15);
   }
   randomCard.color = color;
   return randomCard;
@@ -70,17 +73,17 @@ export const calculatePoints = (game: Game, player: Player) => {
 
         case "black":
           if (card.symbol === player.symbol) {
-            opponent.score = opponent.score = Math.floor(opponent.score / 2);
+            opponent.score = opponent.score - card.points;
           } else {
-            player.score = player.score = Math.floor(player.score / 2);
+            player.score = player.score - card.points;
           }
           break;
 
         case "purple":
           if (card.symbol === player.symbol) {
-            player.score = player.score = Math.floor(player.score * 2);
+            player.score = player.score + card.points;
           } else {
-            opponent.score = opponent.score = Math.floor(opponent.score * 2);
+            opponent.score = opponent.score + card.points;
           }
           break;
       }
