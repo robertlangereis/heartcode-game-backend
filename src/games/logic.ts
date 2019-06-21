@@ -28,9 +28,11 @@ export const generateRandomCard = (symbol: Symbol): Card => {
   } else if (randomNumber <= 93 && randomNumber >= 87) {
     color = "black";
     randomCard.points = Math.floor(1 + Math.random() * 15);
+    if (randomCard.points < 5) randomCard.points = 8
   } else if (randomNumber <= 100 && randomNumber >= 94) {
     color = "purple";
     randomCard.points = Math.floor(1 + Math.random() * 15);
+    if (randomCard.points < 5) randomCard.points = 8
   }
   randomCard.color = color;
   return randomCard;

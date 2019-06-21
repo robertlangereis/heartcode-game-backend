@@ -73,7 +73,7 @@ export class Card extends BaseEntity {
   @Column()
   color: string;
 
-  @Column()
+  @Column({ default: 0 })
   points: number;
 
   @Column({ nullable: true })
